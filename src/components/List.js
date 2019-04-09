@@ -5,7 +5,7 @@ class List extends Component {
         data: []
     }
 
-    componentDidMount() {
+    fetchData = () => {
         fetch('https://first-project-marysia.firebaseio.com/cats.json')
             .then(response => response.json())
             .then(responseData => {
@@ -18,10 +18,20 @@ class List extends Component {
                         }
                     )
                 })
-                this.setState({data})
+                this.setState({ data })
             })
     }
 
+    componentDidMount() {
+        this.fetchData()
+    }
+
+    handleRemove = (id) => {
+        fetch(`https://first-project-marysia.firebaseio.com/cats/${id}.json`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) this.fetchData()
+            })
+    }
 
     render() {
         return (
@@ -31,6 +41,11 @@ class List extends Component {
                         key={el.id}
                     >
                         {el.name}
+                        <button
+                            onClick={() => this.handleRemove(el.id)}
+                        >
+                            DELETE
+                        </button>
                     </div>
                 )}
             </div>
