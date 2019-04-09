@@ -11,9 +11,14 @@ class Create extends React.Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
+    handleSubmit = (event) => {
+        console.log(this.state)
+        event.preventDefault()
+    }
+
     render() {
         return (
-            <form>
+            <form onSubmit={this.handleSubmit}>
                 <div>
                     Name:
                 <input
@@ -42,7 +47,9 @@ class Create extends React.Component {
                     />
                 </div>
                 <div>
-                    <button>SEND</button>
+                    <button>
+                        SEND
+                    </button>
                 </div>
             </form>
         )
