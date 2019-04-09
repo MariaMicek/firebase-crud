@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 class List extends Component {
     state = {
@@ -40,7 +41,9 @@ class List extends Component {
                     <div
                         key={el.id}
                     >
-                        {el.name}
+                        <Link to={`/read/${el.id}`}>
+                            {el.name}
+                        </Link>
                         <button
                             onClick={() => this.handleRemove(el.id)}
                         >
