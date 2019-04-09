@@ -24,6 +24,9 @@ class Read extends React.Component {
                 <p>
                     Color: {this.state.color}
                 </p>
+                <p>
+                    Role: {this.state.role || null}
+                </p>
             </div>
         )
     }

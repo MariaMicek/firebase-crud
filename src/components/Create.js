@@ -1,4 +1,5 @@
 import React from 'react'
+import faker from 'faker'
 
 class Create extends React.Component {
     state = {
@@ -16,7 +17,10 @@ class Create extends React.Component {
             'https://first-project-marysia.firebaseio.com/cats.json', 
             {
                 method: 'POST',
-                body: JSON.stringify(this.state)
+                body: JSON.stringify({
+                    ...this.state,
+                    role: faker.name.jobTitle()
+                })
             }
         )
         .then(response => {
