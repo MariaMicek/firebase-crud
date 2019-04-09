@@ -5,7 +5,8 @@ class Create extends React.Component {
     state = {
         name: '',
         age: '',
-        color: ''
+        color: '',
+        url: ''
     }
 
     handleChange = (event) => {
@@ -13,21 +14,33 @@ class Create extends React.Component {
     }
 
     handleSubmit = (event) => {
-        fetch(
-            'https://first-project-marysia.firebaseio.com/cats.json', 
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    ...this.state,
-                    role: faker.name.jobTitle()
+
+        const headers = {
+            'x-api-key': 'd24b427d-578e-4609-86bd-b36555c3875c'
+        }
+
+        fetch(`https://api.thecatapi.com/v1/images/search`, {headers})
+        .then(response => response.json())
+        .then(data => {
+            this.setState({url: data[0].url}, () => {
+                fetch(
+                    'https://first-project-marysia.firebaseio.com/cats.json', 
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            ...this.state,
+                            role: faker.name.jobTitle()
+                        })
+                    }
+                )
+                .then(response => {
+                    if(response.ok) {
+                        this.props.history.push('/')
+                    }
                 })
-            }
-        )
-        .then(response => {
-            if(response.ok) {
-                this.props.history.push('/')
-            }
+            })  
         })
+
         event.preventDefault()
     }
 

@@ -27,6 +27,7 @@ class Read extends React.Component {
                 <p>
                     Role: {this.state.role || null}
                 </p>
+                <img src={this.state.url} alt={this.state.name}/>
             </div>
         )
     }
