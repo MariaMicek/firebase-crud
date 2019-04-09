@@ -11,6 +11,9 @@ class List extends Component {
             .then(response => response.json())
             .then(responseData => {
                 const data = []
+
+                if (responseData === null) return
+
                 Object.entries(responseData).forEach(el => {
                     data.push(
                         {
@@ -42,7 +45,10 @@ class List extends Component {
                         key={el.id}
                     >
                         <Link to={`/read/${el.id}`}>
-                            {el.name}
+                            {el.name} 
+                        </Link>
+                        <Link to={`/update/${el.id}`}>
+                            {' UPDATE '}
                         </Link>
                         <button
                             onClick={() => this.handleRemove(el.id)}
