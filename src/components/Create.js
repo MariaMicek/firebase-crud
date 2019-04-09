@@ -12,7 +12,18 @@ class Create extends React.Component {
     }
 
     handleSubmit = (event) => {
-        console.log(this.state)
+        fetch(
+            'https://first-project-marysia.firebaseio.com/cats.json', 
+            {
+                method: 'POST',
+                body: JSON.stringify(this.state)
+            }
+        )
+        .then(response => {
+            if(response.ok) {
+                this.props.history.push('/')
+            }
+        })
         event.preventDefault()
     }
 
