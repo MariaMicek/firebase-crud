@@ -1,4 +1,5 @@
 import React from 'react'
+import { db } from '../firebase'
 
 class Update extends React.Component {
     state = {
@@ -9,11 +10,16 @@ class Update extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id
-        fetch(`https://first-project-marysia.firebaseio.com/cats/${id}.json`)
-            .then(response => response.json())
-            .then(data => {
-                this.setState(data)
-            })
+
+        db.ref(`/cats/${id}`).once('value', snapshot => {
+            this.setState(snapshot.val())
+        })
+
+        // fetch(`https://first-project-marysia.firebaseio.com/cats/${id}.json`)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         this.setState(data)
+        //     })
     }
 
     handleChange = (event) => {
@@ -22,19 +28,22 @@ class Update extends React.Component {
 
     handleSubmit = (event) => {
         const id = this.props.match.params.id
-        fetch(
-            `https://first-project-marysia.firebaseio.com/cats/${id}.json`,
-            {
-                method: 'PATCH',
-                body: JSON.stringify(this.state)
-            }
-        )
-            .then(response => {
-                if (response.ok) {
-                    this.props.history.push(`/read/${id}`)
-                }
-            })
-        event.preventDefault()
+
+        db.ref(`/cats/${id}`).set(this.state).then(this.props.history.push(`/read/${id}`))
+
+        // fetch(
+        //     `https://first-project-marysia.firebaseio.com/cats/${id}.json`,
+        //     {
+        //         method: 'PATCH',
+        //         body: JSON.stringify(this.state)
+        //     }
+        // )
+        //     .then(response => {
+        //         if (response.ok) {
+        //             this.props.history.push(`/read/${id}`)
+        //         }
+        //     })
+        // event.preventDefault()
     }
 
     render() {

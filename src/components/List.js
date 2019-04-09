@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { db } from '../firebase'
 
 class List extends Component {
     state = {
@@ -7,23 +8,41 @@ class List extends Component {
     }
 
     fetchData = () => {
-        fetch('https://first-project-marysia.firebaseio.com/cats.json')
-            .then(response => response.json())
-            .then(responseData => {
-                const data = []
 
-                if (responseData === null) return
+        db.ref('/cats')
+          .on('value', snapshot => {
+            const data = []
 
-                Object.entries(responseData).forEach(el => {
-                    data.push(
-                        {
-                            id: el[0],
-                            ...el[1]
-                        }
-                    )
-                })
-                this.setState({ data })
+            if (snapshot.val() === null) return
+
+            Object.entries(snapshot.val()).forEach(el => {
+                data.push(
+                    {
+                        id: el[0],
+                        ...el[1]
+                    }
+                )
             })
+            this.setState({ data: data })
+        })
+
+        // fetch('https://first-project-marysia.firebaseio.com/cats.json')
+        //     .then(response => response.json())
+        //     .then(responseData => {
+        //         const data = []
+
+        //         if (responseData === null) return
+
+        //         Object.entries(responseData).forEach(el => {
+        //             data.push(
+        //                 {
+        //                     id: el[0],
+        //                     ...el[1]
+        //                 }
+        //             )
+        //         })
+        //         this.setState({ data })
+        //     })
     }
 
     componentDidMount() {
@@ -45,7 +64,7 @@ class List extends Component {
                         key={el.id}
                     >
                         <Link to={`/read/${el.id}`}>
-                            {el.name} 
+                            {el.name}
                         </Link>
                         <Link to={`/update/${el.id}`}>
                             {' UPDATE '}
@@ -58,7 +77,7 @@ class List extends Component {
                     </div>
                 )}
             </div>
-        );
+        )
     }
 }
 
